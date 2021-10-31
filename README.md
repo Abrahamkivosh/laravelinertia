@@ -1,0 +1,2 @@
+# laravelinertia
+for learning purposes
