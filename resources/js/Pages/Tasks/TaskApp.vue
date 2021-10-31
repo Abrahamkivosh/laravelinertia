@@ -64,31 +64,25 @@
                             v-for="(todo, index) in todos"
                             :key="index"
                         >
-                            <li
-                                class="
-                                    py-3
-                                    px-2
-                                    bg-blue-200
-                                    mb-1
-                                    shadow-sm
-                                    rounded-md
-                                    w-full
+                            <li  class=" py-3 px-2 mb-2
+                                    bg-blue-200      shadow-sm
+                                    rounded-md    w-full
                                     text-lg
-                                    first-letter:capitalize
-                                    font-serif
-                                    text-left
+                                    first-letter:capitalize  font-serif     text-left        flex     flex-column
                                 "
                                 :class="{ 'text-red-500': todo.completed }"
                             >
-                                <span>
+                                <span class=" justify-start" >
                                     <jet-checkbox
                                         name="complete"
                                         check
                                         @click="completetask(todo)"
                                     />
                                 </span>
-                                {{ todo.name }}
-                                <span v-if="todo.completed" class=" font-bold float-right "  > {{ todo.completed_at }} </span>
+                                <span class=" left-6 pl-6" > {{ todo.name }} </span>
+                               
+                                <span v-if="todo.completed" class=" font-bold  pl-12 "  > {{ todo.completed_at }} </span>
+                                <span @click="deleteTask(todo)"  class="text-red-800 font-bold float-right  pl-12    w-2 h-2  text-4xl rounded-lg  w-2 h-2 delete ">*</span>
                             </li>
                         </ul>
                     </div>
@@ -136,7 +130,7 @@ export default {
           axios.post('http://myapp.myproject.test/api/todos',this.form).then(response=>{
               this.message.status = true
               this.message.text = response.data.message
-            //   this.form.name = ""
+              this.form.name = ""
               this.incomingTodos()
           }).catch(error=>console.error(error)).finally( function(){
               this.form.processing = false
@@ -164,10 +158,8 @@ export default {
 
             axios.put(`http://myapp.myproject.test/api/todos/${todo.id}`,todo).then((response)=>{
 
-                
                 this.message.status = true
                 this.message.text = response.data.message
-                this.form.name = ""
                 this.incomingTodos()
           }).catch((error)=>{
               alert(error)
@@ -179,6 +171,27 @@ export default {
        
 
       },
+      deleteTask(todo){
+
+       let confm =   confirm("are you sure you need to delete ?")
+
+       if(confm){
+           
+            axios.delete(`http://myapp.myproject.test/api/todos/${todo.id}`).then((response)=>{
+                this.message.status = true
+                this.message.text = response.data.message
+                this.incomingTodos()
+          }).catch((error)=>{
+              alert(error)
+          }).finally(()=>{
+               setTimeout(() => {
+                   this.message.status = false
+              }, 5000);
+          })
+       
+       }
+
+      }
 
 
 
@@ -192,4 +205,12 @@ export default {
 };
 </script>
 
-<style></style>
+<style>
+
+.delete{
+    cursor: pointer;
+    float: right;
+
+}
+
+</style>
