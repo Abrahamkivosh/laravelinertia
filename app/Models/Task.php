@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Cache;
 
 class Task extends Model
 {
@@ -19,4 +20,13 @@ class Task extends Model
     {
         return $this->belongsTo(User::class, 'user_id', 'id');
     }
+
+    protected static function booted()
+    {
+        static::created(function($task){
+            Cache::forget('tasks');
+        });
+    }
+
+ 
 }

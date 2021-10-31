@@ -2,13 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
+use App\Models\Task;
+use Illuminate\Http\Request;
+use App\Http\Resources\TaskResource;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Cache;
 use App\Http\Requests\TaskStoreRequest;
 use App\Http\Requests\TaskUpdateRequest;
-use App\Http\Resources\TaskResource;
-use App\Models\Task;
-use Carbon\Carbon;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Symfony\Component\HttpFoundation\Response;
 
 class TaskController extends Controller
@@ -23,7 +24,12 @@ class TaskController extends Controller
      */
     public function index()
     {
-        $tasks = Task::latest()->get();
+
+        // $tasks = Cache::remember("tasks",60,function(){
+        //     return Task::latest()->get() ;
+        // } ) ;
+        $tasks = Task::latest()->get() ;
+        // return $tasks ;
         return TaskResource::collection($tasks);
     }
 
@@ -70,7 +76,7 @@ class TaskController extends Controller
     {
         $task = Task::findOrFail($taskId);
         $data = $request->validated() ;
-        if ( $request->input('completed') == true ) {
+        if ( $request->input('completed') == true  ||  $request->input('completed') == 1 ) {
             $data['completed'] =true;
             $data['completed_at'] = Carbon::now() ;
         }
