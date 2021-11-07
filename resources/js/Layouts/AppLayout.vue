@@ -224,7 +224,7 @@
             </header>
 
             <!-- Page Content -->
-            <main>
+            <main class=" bg-gradient-to-r from-indigo-400 to-pink-500" >
                 <slot></slot>
             </main>
         </div>
