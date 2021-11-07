@@ -6,7 +6,7 @@
             </h2>
         </template>
 
-        <div class="py-12">
+        <div class="py-12  max-h-full ">
             <div
                 class="
                     max-w-12xl
